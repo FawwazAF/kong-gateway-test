@@ -1,0 +1,24 @@
+_format_version: "2.1"
+services:
+  - name: service1
+    url: http://app:3000/protected
+    routes:
+      - name: protected-route
+        paths:
+          - /
+        methods:
+          - GET
+        plugins:
+          - name: jwt
+            config:
+              key_claim_name: iss
+              secret_is_base64: false
+              claims_to_verify:
+                - exp
+
+consumers:
+  - username: consumer1
+    jwt_secrets:
+      - key: "https://securetoken.google.com/personal-f3248"  # Match the `iss` claim from the JWT
+        secret: "put-your-jwt-secret"
+        algorithm: HS256
